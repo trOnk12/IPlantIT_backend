@@ -1,0 +1,19 @@
+{
+  "name": "iplantit_server",
+  "version": "1.0.0",
+  "description": "back-end for registering new device and retrieving sensor data",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trOnk12/IPlantIT_backend.git"
+  },
+  "author": "Mateusz Pachulski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trOnk12/IPlantIT_backend/issues"
+  },
+  "homepage": "https://github.com/trOnk12/IPlantIT_backend#readme"
+}
