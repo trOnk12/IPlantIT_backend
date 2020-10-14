@@ -1,0 +1,5 @@
+const mongodbUri = "mongodb+srv://admin:Acostam12@@cluster0.4uqs2.mongodb.net/i_plant_it?retryWrites=true&w=majority";
+
+module.exports = {
+    mongodbUri : mongodbUri
+}
