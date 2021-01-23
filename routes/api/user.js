@@ -24,11 +24,10 @@ router.post("/user",(req,res,next) =>{
 router.get("/user",(req,res,next) => {
     User.findById(req.payload.id).then(function(user){
 
-    };
+    });
 });
 
 //delte the user
 
 
 module.exports = router
-§

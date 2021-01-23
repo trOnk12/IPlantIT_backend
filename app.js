@@ -1,12 +1,24 @@
 const bodyParser = require('body-parser');
       express = require('express');
       mongoose = require('mongoose');
-
+      
+     const  passport = require('passport');
 // create global app object
 const app = express();
 
+const expressSession = require('express-session')({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+});
+
+app.use(expressSession);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // connect to mongoDb
 const mongoDb = require("./database/mongo_db");
