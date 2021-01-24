@@ -1,5 +1,8 @@
 var mongoose = require('mongoose');
 
+const crypto = require('crypto');
+const Token = require('./token');
+
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
@@ -21,4 +24,14 @@ var UserSchema = new Schema({
   }
 });
 
-mongoose.model("User",UserSchema);
+
+UserSchema.methods.generateVerificationToken = function() {
+  let payload = {
+      userId: this._id,
+      token: crypto.randomBytes(20).toString('hex')
+  };
+
+  return new Token(payload);
+};
+
+module.exports = mongoose.models.User || mongoose.model('User',UserSchema);

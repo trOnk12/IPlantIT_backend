@@ -9,7 +9,7 @@ var DeviceSchema = new Schema({
   UV: {type:String,default:0}
 });
 
-mongoose.model("Device",DeviceSchema);
+module.exports = mongoose.models.Device || mongoose.model('Device',DeviceSchema);
 
 
 

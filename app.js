@@ -25,8 +25,9 @@ const mongoDb = require("./database/mongo_db");
 
 mongoDb.connect();
 
-require('./models/User');
-require('./models/Device');
+require('./models/user');
+require('./models/device');
+// require('./models/token');
 
 app.use(require("./routes"));
 

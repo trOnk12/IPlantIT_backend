@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 const router = require('express').Router()
 
-const User = mongoose.model("User");
-const Device = mongoose.model("User");
+const User = require('../../models/user');
+
+const Device = require('../../models/device');
 
 // add the device 
 router.post("/user",(req,res,next) =>{
@@ -27,7 +28,7 @@ router.get("/user",(req,res,next) => {
     });
 });
 
-//delte the user
+//delte the use
 
 
 module.exports = router
