@@ -20,12 +20,12 @@ const postSignup = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     yield express_validator_1.check("email", "Email is not valid").isEmail().run(req);
     yield express_validator_1.check("password", "Password must be at least 4 characters long").isLength({ min: 4 }).run(req);
     yield express_validator_1.check("confirmPassword", "Passwords do not match").equals(req.body.password).run(req);
-    // const errors = validationResult(req);
-    // if(!errors.isEmpty){
-    //     res.status(401).send({
-    //         message: errors.array()
-    //     });
-    // }
+    const errors = express_validator_1.validationResult(req);
+    if (!errors.isEmpty) {
+        res.status(401).send({
+            message: errors.array()
+        });
+    }
     const user = new User_1.User({
         email: req.body.email,
         password: req.body.password
