@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { check, sanitize, validationResult } from "express-validator";
 import { NativeError } from "mongoose";
+import { IVerifyOptions } from "passport-local";
+import passport from "passport";
 import { User, UserDocument } from "../models/User";
-import nodemailer from "nodemailer";
-import async from "async";
 
 
 /**
@@ -41,4 +41,34 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
     });
 };
 
+/**
+* Sign in using email and password.
+* @route POST /login
+*/
+export const postLogin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    await check("email", "Email is not valid").isEmail().run(req);
+    await check("password", "Password cannot be blank").isLength({ min: 1 }).run(req);
+    await sanitize("email").normalizeEmail({ gmail_remove_dots: false }).run(req);
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        res.status(401).send({
+            message: errors.array()
+        });
+    }
+
+    passport.authenticate("local", (err: Error, user: UserDocument, info: IVerifyOptions) => {
+        if (err) { return next(err); }
+        if (!user) {
+            res.status(401).send({
+                message: info.message
+            });
+        }
+        req.logIn(user, (err) => {
+            if (err) { return next(err); }
+            res.send("User successfully registered");
+        });
+    })(req, res, next);
+};
 
