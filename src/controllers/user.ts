@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { check, sanitize, validationResult } from "express-validator";
 import { NativeError } from "mongoose";
 import { User, UserDocument } from "../models/User";
+import nodemailer from "nodemailer";
+import async from "async";
+
 
 /**
  * Create a new local account.
@@ -14,16 +17,11 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
 
     const errors = validationResult(req);
 
-    if(!errors.isEmpty){
+    if (!errors.isEmpty) {
         res.status(401).send({
             message: errors.array()
         });
     }
-
-    const user = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
 
     User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
         if (err) { return next(err); }
@@ -32,9 +30,12 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
                 message: 'User already exists.'
             });
         }
+        const user = new User({
+            email: req.body.email,
+            password: req.body.password
+        });
         user.save((err) => {
             if (err) { return next(err); }
-
             res.send("User successfully registered");
         });
     });

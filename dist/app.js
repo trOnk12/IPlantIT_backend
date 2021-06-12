@@ -26,6 +26,8 @@ const express_1 = __importDefault(require("express"));
 const userController = __importStar(require("./controllers/user"));
 // Create Express server
 const app = express_1.default();
+app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.post("/signup", userController.postSignup);
 exports.default = app;
 //# sourceMappingURL=app.js.map
