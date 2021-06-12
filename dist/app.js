@@ -23,9 +23,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const mongodb_1 = __importDefault(require("mongodb"));
 const userController = __importStar(require("./controllers/user"));
 // Create Express server
 const app = express_1.default();
+// Connect to MongoDB
+try {
+    mongodb_1.default.connect("mongodb+srv://admin:admin@cluster0.4uqs2.mongodb.net/i_p?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => console.log("MongoDB connected"))
+        .catch(err => console.log(err));
+}
+catch (err) {
+    console.log(err);
+}
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.post("/signup", userController.postSignup);

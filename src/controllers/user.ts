@@ -16,31 +16,34 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
     await check("confirmPassword", "Passwords do not match").equals(req.body.password).run(req);
 
     const errors = validationResult(req);
-
+    console.log("here");
     if (!errors.isEmpty) {
         res.status(401).send({
             message: errors.array()
         });
     }
 
-    User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
-        if (err) { return next(err); }
-        if (existingUser) {
-            res.status(401).send({
-                message: 'User already exists.'
-            });
-        }
-        const user = new User({
-            email: req.body.email,
-            password: req.body.password
-        });
-        user.save((err) => {
-            if (err) { return next(err); }
-            res.send("User successfully registered");
-        });
-    });
-};
+    console.log("here2");
+    console.log(req.body);
 
+    const user = new User({
+        email: req.body.email,
+        password: req.body.password
+    });
+    user.save((err) => {
+        if (err) { return next(err); }
+        res.send("User successfully registered");
+    });
+    // User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
+    //     if (err) { return next(err); }
+    //     if (existingUser) {
+    //         res.status(401).send({
+    //             message: 'User already exists.'
+    //         });
+    //     }
+  
+    // });
+};
 /**
 * Sign in using email and password.
 * @route POST /login
