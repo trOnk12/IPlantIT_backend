@@ -16,33 +16,30 @@ export const postSignup = async (req: Request, res: Response, next: NextFunction
     await check("confirmPassword", "Passwords do not match").equals(req.body.password).run(req);
 
     const errors = validationResult(req);
-    console.log("here");
+
     if (!errors.isEmpty) {
         res.status(401).send({
             message: errors.array()
         });
     }
 
-    console.log("here2");
-    console.log(req.body);
-
-    const user = new User({
-        email: req.body.email,
-        password: req.body.password
-    });
-    user.save((err) => {
+    User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
         if (err) { return next(err); }
-        res.send("User successfully registered");
+        if (existingUser) {
+            res.status(401).send({
+                message: 'User already exists.'
+            });
+        } else {
+            const user = new User({
+                email: req.body.email,
+                password: req.body.password
+            });
+            user.save((err) => {
+                if (err) { return next(err); }
+                res.send("User successfully registered");
+            });
+        }
     });
-    // User.findOne({ email: req.body.email }, (err: NativeError, existingUser: UserDocument) => {
-    //     if (err) { return next(err); }
-    //     if (existingUser) {
-    //         res.status(401).send({
-    //             message: 'User already exists.'
-    //         });
-    //     }
-  
-    // });
 };
 /**
 * Sign in using email and password.
@@ -67,11 +64,12 @@ export const postLogin = async (req: Request, res: Response, next: NextFunction)
             res.status(401).send({
                 message: info.message
             });
+        } else {
+            req.logIn(user, (err) => {
+                if (err) { return next(err); }
+                res.send("User successfully registered");
+            });
         }
-        req.logIn(user, (err) => {
-            if (err) { return next(err); }
-            res.send("User successfully registered");
-        });
     })(req, res, next);
 };
 

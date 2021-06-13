@@ -1,8 +1,10 @@
 import express from 'express';
 import app from "./app";
 
-const server = app.listen(3000, () => {
-  return console.log(`server is listening on ${3000}`);
+const port = process.env.SERVER_PORT;
+
+const server = app.listen(port, () => {
+  return console.log(`server is listening on ${port}`);
 });
 
 export default server;

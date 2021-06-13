@@ -7,14 +7,10 @@ import * as userController from "./controllers/user";
 const app = express();
 
 // Connect to MongoDB
-try{
-mongoose.connect("mongodb+srv://admin:admin@cluster0.4uqs2.mongodb.net/i_p?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb+srv://admin:admin@cluster0.4uqs2.mongodb.net/i_p?retryWrites=true&w=majority&ssl=true", { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
 
-}catch(err){
-    console.log(err);
-}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
